@@ -9,6 +9,16 @@ object Dependencies {
     const val appcompat = "androidx.appcompat:appcompat:${Versions.appcompat}"
     const val constraintlayout = "androidx.constraintlayout:constraintlayout:${Versions.constraintlayout}"
     const val corektx = "androidx.core:core-ktx:${Versions.corektx}"
+    val koin = arrayOf(
+        "org.koin:koin-androidx-scope:${Versions.koin}",
+        "org.koin:koin-androidx-viewmodel:${Versions.koin}",
+        "org.koin:koin-androidx-fragment:${Versions.koin}",
+        "org.koin:koin-androidx-ext:${Versions.koin}"
+    )
+    val lifecycle = arrayOf(
+        "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}",
+        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
+    )
     const val material = "com.google.android.material:material:${Versions.material}"
 }
 
@@ -17,4 +27,5 @@ object Plugins {
     const val common_android = "common-android-plugin"
     const val common_kotlin = "common-kotlin-plugin"
     const val library = "com.android.library"
+    const val versions = "com.github.ben-manes.versions"
 }

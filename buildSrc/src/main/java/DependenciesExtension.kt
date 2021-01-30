@@ -6,20 +6,22 @@ import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaPluginExtension
 import org.gradle.kotlin.dsl.project
 
-private fun DependencyHandler.addWithProjectModuleCheck(type: String, item: String) {
-    if (item.startsWith(":")) {
-        add(type, project(item))
-    } else {
-        add(type, item)
+private fun DependencyHandler.addWithProjectModuleCheck(type: String, vararg items: String) {
+    items.forEach { item ->
+        if (item.startsWith(":")) {
+            add(type, project(item))
+        } else {
+            add(type, item)
+        }
     }
 }
 
-fun DependencyHandler.implementation(item: String) {
-    addWithProjectModuleCheck("implementation", item)
+fun DependencyHandler.implementation(vararg items: String) {
+    addWithProjectModuleCheck("implementation", *items)
 }
 
-fun DependencyHandler.api(item: String) {
-    addWithProjectModuleCheck("api", item)
+fun DependencyHandler.api(vararg items: String) {
+    addWithProjectModuleCheck("api", *items)
 }
 
 fun android(project: Project, block: BaseExtension.() -> Unit) {

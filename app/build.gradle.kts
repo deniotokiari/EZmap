@@ -17,6 +17,8 @@ dependencies {
     implementation(Dependencies.appcompat)
     implementation(Dependencies.constraintlayout)
     implementation(Dependencies.corektx)
+    implementation(*Dependencies.koin)
+    implementation(*Dependencies.lifecycle)
     implementation(Dependencies.material)
 
     implementation(":core:design")
