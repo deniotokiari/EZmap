@@ -1,15 +1,16 @@
 package by.deniotokiari.ezmap
 
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import by.deniotokiari.utils.kotlin.TitleUtil
+import by.deniotokiari.ezmap.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private val binding: ActivityMainBinding by lazy { ActivityMainBinding.inflate(layoutInflater) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        findViewById<TextView>(R.id.text_view).text = TitleUtil().getTitle()
+        setContentView(binding.root)
     }
 }

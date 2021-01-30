@@ -6,6 +6,13 @@ plugins {
 versionCode = AppConfig.versionCode
 versionName = AppConfig.versionName
 
+android {
+    @Suppress("UnstableApiUsage")
+    buildFeatures {
+        viewBinding = true
+    }
+}
+
 dependencies {
     implementation(Dependencies.appcompat)
     implementation(Dependencies.constraintlayout)
