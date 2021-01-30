@@ -1,7 +1,7 @@
 object Versions {
     // app level
     const val gradle = "4.1.2"
-    const val kotlin = "1.3.72"
+    const val kotlin = "1.4.21"
     const val versions = "0.36.0"
 
     // libs
