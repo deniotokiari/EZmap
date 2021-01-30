@@ -15,5 +15,6 @@ object Dependencies {
 object Plugins {
     const val application = "com.android.application"
     const val common_android = "common-android-plugin"
+    const val common_kotlin = "common-kotlin-plugin"
     const val library = "com.android.library"
 }

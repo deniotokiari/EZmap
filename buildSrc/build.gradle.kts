@@ -4,13 +4,13 @@ plugins {
 
 gradlePlugin {
     plugins {
-        register("common-android-plugin") {
-            id = "common-android-plugin"
+        register(Plugins.common_android) {
+            id = Plugins.common_android
             implementationClass = "CommonAndroidPlugin"
         }
 
-        register("common-kotlin-plugin") {
-            id = "common-kotlin-plugin"
+        register(Plugins.common_kotlin) {
+            id = Plugins.common_kotlin
             implementationClass = "CommonKotlinPlugin"
         }
     }

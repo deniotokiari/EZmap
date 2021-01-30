@@ -1,3 +1,3 @@
 plugins {
-    id("common-kotlin-plugin")
+    id(Plugins.common_kotlin)
 }
