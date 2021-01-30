@@ -1,9 +1,10 @@
 package by.deniotokiari.ezmap
 
 import android.app.Application
-import by.deniotokiari.ezmap.di.application
-import by.deniotokiari.ezmap.di.viewModels
+import by.deniotokiari.ezmap.di.featuresModule
+import by.deniotokiari.ezmap.di.main
 import org.koin.android.ext.koin.androidContext
+import org.koin.androidx.fragment.koin.fragmentFactory
 import org.koin.core.context.startKoin
 
 @Suppress("unused")
@@ -14,9 +15,10 @@ class EzMapApplication : Application() {
 
         startKoin {
             androidContext(this@EzMapApplication)
+            fragmentFactory()
             modules(
-                application,
-                viewModels
+                main,
+                *featuresModule
             )
         }
     }

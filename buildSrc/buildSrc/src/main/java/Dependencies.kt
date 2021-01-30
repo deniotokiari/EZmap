@@ -20,6 +20,11 @@ object Dependencies {
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     )
     const val material = "com.google.android.material:material:${Versions.material}"
+    val navigation = arrayOf(
+        "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}",
+        "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
+    )
+    const val navigation_safe_args = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
 }
 
 object Plugins {
@@ -27,5 +32,6 @@ object Plugins {
     const val common_android = "common-android-plugin"
     const val common_kotlin = "common-kotlin-plugin"
     const val library = "com.android.library"
+    const val navigation = "androidx.navigation.safeargs.kotlin"
     const val versions = "com.github.ben-manes.versions"
 }

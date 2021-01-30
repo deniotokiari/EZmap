@@ -32,8 +32,11 @@ fun java(project: Project, block: JavaPluginExtension.() -> Unit) {
     (project as ExtensionAware).extensions.configure("java", block)
 }
 
+private val Project.android: BaseExtension?
+    get() = (extensions.findByName("android") as? BaseExtension)
+
 private val Project.defaultConfig: DefaultConfig?
-    get() = (extensions.findByName("android") as? BaseExtension)?.defaultConfig
+    get() = android?.defaultConfig
 
 var Project.versionCode: Int?
     set(value) {
@@ -46,3 +49,10 @@ var Project.versionName: String?
         defaultConfig?.versionName = value
     }
     get() = defaultConfig?.versionName
+
+@Suppress("UnstableApiUsage")
+var Project.viewBinding: Boolean?
+    set(value) {
+        android?.buildFeatures?.viewBinding = value
+    }
+    get() = android?.buildFeatures?.viewBinding
