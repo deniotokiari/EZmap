@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">EZmap</string>
+    
+    <string name="search">Search</string>
+    <string name="directions">Directions</string>
+    <string name="map_layers">Map Layers</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="settings">Settings</string>
 </resources>
