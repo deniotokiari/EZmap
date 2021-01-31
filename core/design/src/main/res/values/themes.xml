@@ -5,6 +5,8 @@
 
         <item name="mapControlsStyle">@style/MapControlsStyle</item>
         <item name="spaceMedium">@dimen/space_medium</item>
+
+        <item name="colorPrimaryWithAlpha">@color/color_primary_with_alpha</item>
     </style>
 
     <!-- Base application theme. -->

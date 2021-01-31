@@ -2,4 +2,5 @@
 <resources>
     <attr name="mapControlsStyle" format="reference" />
     <attr name="spaceMedium" format="reference" />
+    <attr name="colorPrimaryWithAlpha" format="reference" />
 </resources>
