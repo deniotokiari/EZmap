@@ -6,6 +6,9 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.osmdroid.config.Configuration
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.views.CustomZoomButtonsController
 
 class MapFragment : Fragment(R.layout.fragment_map) {
 
@@ -16,6 +19,24 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         super.onViewCreated(view, savedInstanceState)
 
         initToolTipsForMapControls()
+
+        with(binding.map) {
+            Configuration.getInstance().userAgentValue = context.packageName
+            setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
+            zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        binding.map.onResume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        binding.map.onPause()
     }
 
     private fun initToolTipsForMapControls() {
