@@ -1,43 +1,78 @@
 package by.deniotokiari.feature.permissions
 
 import android.Manifest
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import by.deniotokiari.core.navigation.MainNavigation
+
+private val permissions = arrayOf(
+    Manifest.permission.ACCESS_COARSE_LOCATION,
+    Manifest.permission.ACCESS_FINE_LOCATION,
+    Manifest.permission.ACCESS_WIFI_STATE,
+    Manifest.permission.ACCESS_NETWORK_STATE,
+    Manifest.permission.INTERNET
+)
 
 class PermissionsHandlerFragment(
     private val mainNavigation: MainNavigation
 ) : Fragment(R.layout.fragment_permissions_handler) {
 
+    private var activityResultLauncher: ActivityResultLauncher<Array<String>>? = null
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requireActivity().registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
-            if (result.values.all { it }) {
-                mainNavigation.permissionsHandlerToMap()
-            } else {
-                // TODO open settings
-            }
-        }.apply {
-            val permissions = arrayOf(
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_WIFI_STATE,
-                Manifest.permission.ACCESS_NETWORK_STATE,
-                Manifest.permission.INTERNET
-            )
-
+        activityResultLauncher = requireActivity().registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
             when {
-                permissions.map { ContextCompat.checkSelfPermission(requireContext(), it) }.all { it == PackageManager.PERMISSION_GRANTED } -> mainNavigation.permissionsHandlerToMap()
-                permissions.map { shouldShowRequestPermissionRationale(it) }.any { it } -> {
-                    // TODO show dialog
+                result.values.all { it } -> mainNavigation.permissionsHandlerToMap()
+                shouldShowRequestPermissionRationale() -> {
+                    AlertDialog
+                        .Builder(requireContext())
+                        .setCancelable(false)
+                        .setMessage(R.string.permissions_request)
+                        .setPositiveButton(R.string.ok) { _, _ -> activityResultLauncher?.launch(permissions) }
+                        .show()
                 }
-                else -> launch(permissions)
+                else -> {
+                    AlertDialog
+                        .Builder(requireContext())
+                        .setCancelable(false)
+                        .setMessage(R.string.permissions_request)
+                        .setPositiveButton(R.string.settings) { _, _ ->
+                            startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply { data = Uri.fromParts("package", requireActivity().packageName, null) })
+                        }
+                        .setNegativeButton(R.string.no_thanks) { _, _ -> requireActivity().finishAffinity() }
+                        .show()
+                }
             }
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+
+        when {
+            permissions.map { ContextCompat.checkSelfPermission(requireContext(), it) }.all { it == PackageManager.PERMISSION_GRANTED } -> mainNavigation.permissionsHandlerToMap()
+            shouldShowRequestPermissionRationale() -> {
+                AlertDialog
+                    .Builder(requireContext())
+                    .setCancelable(false)
+                    .setMessage(R.string.permissions_request)
+                    .setPositiveButton(R.string.ok) { _, _ -> activityResultLauncher?.launch(permissions) }
+                    .show()
+            }
+            else -> activityResultLauncher?.launch(permissions)
+        }
+    }
+
+    private fun shouldShowRequestPermissionRationale() = permissions.map { shouldShowRequestPermissionRationale(it) }.any { it }
 }

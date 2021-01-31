@@ -6,4 +6,8 @@
     <string name="map_layers">Map Layers</string>
     <string name="bookmarks">Bookmarks</string>
     <string name="settings">Settings</string>
+
+    <string name="ok">OK</string>
+    <string name="no_thanks">No, thanks</string>
+    <string name="permissions_request">Please note that without appropriate permissions that app could not properly work.</string>
 </resources>

@@ -22,8 +22,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         with(binding.map) {
             Configuration.getInstance().userAgentValue = context.packageName
-            setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
+            setTileSource(TileSourceFactory.MAPNIK)
             zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+            setMultiTouchControls(true)
         }
     }
 

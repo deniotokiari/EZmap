@@ -10,11 +10,8 @@ dependencies {
     implementation(Dependencies.constraintlayout)
     implementation(Dependencies.corektx)
     implementation(Dependencies.fragment)
-    implementation(*Dependencies.koin)
-    implementation(*Dependencies.lifecycle)
     implementation(Dependencies.material)
 
-    implementation(":core:design")
     implementation(":core:navigation")
     implementation(":core:strings")
 }
