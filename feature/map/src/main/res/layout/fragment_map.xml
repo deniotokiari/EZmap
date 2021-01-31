@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimary"
+        android:background="@color/color_primary_with_opcity"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent">
 
