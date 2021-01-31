@@ -15,6 +15,7 @@ object Dependencies {
         "org.koin:koin-androidx-fragment:${Versions.koin}",
         "org.koin:koin-androidx-ext:${Versions.koin}"
     )
+    val fragment = "androidx.fragment:fragment:${Versions.fragment}"
     val lifecycle = arrayOf(
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}",
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"

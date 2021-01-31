@@ -8,6 +8,7 @@ object Versions {
     const val appcompat = "1.2.0"
     const val constraintlayout = "2.0.4"
     const val corektx = "1.3.2"
+    const val fragment = "1.3.0-rc02"
     const val koin = "2.2.2"
     const val lifecycle = "2.2.0"
     const val material = "1.2.1"
