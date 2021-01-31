@@ -25,6 +25,7 @@ object Dependencies {
         "androidx.navigation:navigation-ui-ktx:${Versions.navigation}"
     )
     const val navigation_safe_args = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
+    const val osmdroid = "org.osmdroid:osmdroid-android:${Versions.osmdroid}"
 }
 
 object Plugins {

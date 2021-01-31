@@ -12,6 +12,7 @@ dependencies {
     implementation(*Dependencies.koin)
     implementation(*Dependencies.lifecycle)
     implementation(Dependencies.material)
+    implementation(Dependencies.osmdroid)
 
     implementation(":core:design")
     implementation(":core:strings")
