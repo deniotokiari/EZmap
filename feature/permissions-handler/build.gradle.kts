@@ -1,11 +1,7 @@
 plugins {
-    id(Plugins.application)
+    id(Plugins.library)
     id(Plugins.common_android)
-    id(Plugins.navigation)
 }
-
-versionCode = AppConfig.versionCode
-versionName = AppConfig.versionName
 
 viewBinding = true
 
@@ -16,13 +12,8 @@ dependencies {
     implementation(*Dependencies.koin)
     implementation(*Dependencies.lifecycle)
     implementation(Dependencies.material)
-    implementation(*Dependencies.navigation)
 
     implementation(":core:design")
     implementation(":core:navigation")
     implementation(":core:strings")
-    implementation(":feature:map")
-    implementation(":feature:permissions-handler")
-    implementation(":utils:android")
-    implementation(":utils:kotlin")
 }

@@ -3,7 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_main_activity"
-    app:startDestination="@id/fragment_map">
+    app:startDestination="@id/fragment_permissions">
+
+    <fragment
+        android:id="@+id/fragment_permissions"
+        android:name="by.deniotokiari.feature.permissions.PermissionsHandlerFragment"
+        android:label="@null"
+        tools:layout="@layout/fragment_permissions_handler">
+        <action
+            android:id="@+id/permissions_to_map"
+            app:destination="@id/fragment_map"
+            app:popUpTo="@id/fragment_permissions"
+            app:popUpToInclusive="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/fragment_map"
