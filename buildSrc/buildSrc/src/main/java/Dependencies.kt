@@ -15,11 +15,12 @@ object Dependencies {
         "org.koin:koin-androidx-fragment:${Versions.koin}",
         "org.koin:koin-androidx-ext:${Versions.koin}"
     )
-    val fragment = "androidx.fragment:fragment:${Versions.fragment}"
+    const val fragment = "androidx.fragment:fragment:${Versions.fragment}"
     val lifecycle = arrayOf(
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}",
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     )
+    const val location = "com.google.android.gms:play-services-location:${Versions.location}"
     const val material = "com.google.android.material:material:${Versions.material}"
     val navigation = arrayOf(
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}",

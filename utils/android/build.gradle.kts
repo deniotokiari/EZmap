@@ -5,6 +5,7 @@ plugins {
 
 dependencies {
     implementation(*Dependencies.lifecycle)
+    implementation(Dependencies.location)
 
     implementation(":utils:kotlin")
 }

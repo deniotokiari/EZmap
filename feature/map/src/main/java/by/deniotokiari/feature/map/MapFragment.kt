@@ -1,9 +1,13 @@
 package by.deniotokiari.feature.map
 
+import android.graphics.Bitmap
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.config.Configuration
@@ -14,11 +18,11 @@ import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.ScaleBarOverlay
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
-
-class MapFragment : Fragment(R.layout.fragment_map) {
+class MapFragment(
+    private val locationLiveData: LiveData<Location>
+) : Fragment(R.layout.fragment_map) {
 
     private val binding: FragmentMapBinding by lazy { FragmentMapBinding.bind(requireView()) }
     private val viewModel: MapViewModel by viewModel()
@@ -45,6 +49,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 }
 
                 override fun onZoom(event: ZoomEvent?): Boolean {
+                    Log.d("LOG", "z: ${event?.zoomLevel} latNorth = ${boundingBox.latNorth} latSouth = ${boundingBox.latSouth}")
                     if (boundingBox.latNorth == MapView.getTileSystem().maxLatitude && boundingBox.latSouth == MapView.getTileSystem().minLatitude) {
                         event?.zoomLevel?.let { minZoomLevel = it }
                     }
@@ -61,12 +66,22 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             setScrollableAreaLimitLatitude(MapView.getTileSystem().maxLatitude, MapView.getTileSystem().minLatitude, 0)
             setScrollableAreaLimitLongitude(MapView.getTileSystem().minLongitude, MapView.getTileSystem().maxLongitude, 0)
 
-            controller.setZoom(14.0)
+            controller.setZoom(3.0)
 
-            val gpsMyLocationProvider = GpsMyLocationProvider(requireContext())
+            val gpsMyLocationProvider = LocationProvider()
+
+            locationLiveData.observe(viewLifecycleOwner) {
+                gpsMyLocationProvider.onLocationChanged(it)
+            }
+
             val myLocationNewOverlay = MyLocationNewOverlay(gpsMyLocationProvider, this)
-            myLocationNewOverlay.enableMyLocation()
-            myLocationNewOverlay.enableFollowLocation()
+            myLocationNewOverlay.setPersonIcon(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
+
+            myLocationNewOverlay.runOnFirstFix {
+                post {
+                    controller.animateTo(myLocationNewOverlay.myLocation, 14.0, null)
+                }
+            }
 
             val scaleBarOverlay = ScaleBarOverlay(this)
             scaleBarOverlay.setScaleBarOffset(10, 10)

@@ -11,6 +11,7 @@ object Versions {
     const val fragment = "1.3.0-rc02"
     const val koin = "2.2.2"
     const val lifecycle = "2.2.0"
+    const val location = "17.1.0"
     const val material = "1.2.1"
     const val navigation = "2.3.3"
     const val osmdroid = "6.1.10"
