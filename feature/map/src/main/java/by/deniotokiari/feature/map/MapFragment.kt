@@ -3,7 +3,6 @@ package by.deniotokiari.feature.map
 import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
@@ -11,9 +10,6 @@ import androidx.lifecycle.LiveData
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.config.Configuration
-import org.osmdroid.events.MapListener
-import org.osmdroid.events.ScrollEvent
-import org.osmdroid.events.ZoomEvent
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
@@ -43,25 +39,10 @@ class MapFragment(
             isHorizontalMapRepetitionEnabled = false
             isVerticalMapRepetitionEnabled = false
 
-            addMapListener(object : MapListener {
-                override fun onScroll(event: ScrollEvent?): Boolean {
-                    return false
-                }
-
-                override fun onZoom(event: ZoomEvent?): Boolean {
-                    Log.d("LOG", "z: ${event?.zoomLevel} latNorth = ${boundingBox.latNorth} latSouth = ${boundingBox.latSouth}")
-                    if (boundingBox.latNorth == MapView.getTileSystem().maxLatitude && boundingBox.latSouth == MapView.getTileSystem().minLatitude) {
-                        event?.zoomLevel?.let { minZoomLevel = it }
-                    }
-
-                    if (boundingBox.lonWest == MapView.getTileSystem().minLongitude && boundingBox.lonEast == MapView.getTileSystem().maxLongitude) {
-                        event?.zoomLevel?.let { minZoomLevel = it }
-                    }
-
-                    return false
-                }
-
-            })
+            minZoomLevel = when (context.resources.configuration.orientation) {
+                android.content.res.Configuration.ORIENTATION_PORTRAIT -> 1.5220123826976608
+                else -> 1.5680000000000476
+            }
 
             setScrollableAreaLimitLatitude(MapView.getTileSystem().maxLatitude, MapView.getTileSystem().minLatitude, 0)
             setScrollableAreaLimitLongitude(MapView.getTileSystem().minLongitude, MapView.getTileSystem().maxLongitude, 0)

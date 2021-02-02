@@ -16,7 +16,7 @@ class LocationLiveData(private val context: Context) : LiveData<Location>() {
     private var locationProvider: FusedLocationProviderClient? = null
     private var locationCallback: LocationCallback? = null
 
-    private fun createLocationProvider(context: Context) {
+    private fun createLocationProvider() {
         locationProvider = LocationServices.getFusedLocationProviderClient(context)
     }
 
@@ -29,10 +29,14 @@ class LocationLiveData(private val context: Context) : LiveData<Location>() {
     }
 
     @SuppressLint("MissingPermission")
-    override fun onActive() {
-        createLocationProvider(context)
-        createLocationCallback()
+    private fun requestLastLocation() {
+        locationProvider?.lastLocation?.addOnSuccessListener {
+            postValue(it)
+        }
+    }
 
+    @SuppressLint("MissingPermission")
+    private fun requestLocationUpdates() {
         locationCallback?.let {
             locationProvider?.requestLocationUpdates(
                 LocationRequest()
@@ -43,6 +47,14 @@ class LocationLiveData(private val context: Context) : LiveData<Location>() {
                 null
             )
         }
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onActive() {
+        createLocationProvider()
+        requestLastLocation()
+        createLocationCallback()
+        requestLocationUpdates()
     }
 
     override fun onInactive() {
