@@ -16,4 +16,6 @@ dependencies {
 
     implementation(":core:design")
     implementation(":core:strings")
+    implementation( ":utils:android")
+    implementation( ":utils:kotlin")
 }

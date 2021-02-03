@@ -1,6 +1,5 @@
 package by.deniotokiari.feature.map
 
-import android.graphics.Bitmap
 import android.location.Location
 import android.os.Bundle
 import android.view.View
@@ -8,13 +7,14 @@ import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
+import by.deniotokiari.utils.android.observeOnce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.ScaleBarOverlay
-import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay
 
 class MapFragment(
     private val locationLiveData: LiveData<Location>
@@ -54,16 +54,11 @@ class MapFragment(
             locationLiveData.observe(viewLifecycleOwner) {
                 gpsMyLocationProvider.onLocationChanged(it)
             }
-
-            val myLocationNewOverlay = MyLocationNewOverlay(gpsMyLocationProvider, this)
-            myLocationNewOverlay.setPersonIcon(Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888))
-
-            myLocationNewOverlay.runOnFirstFix {
-                post {
-                    controller.animateTo(myLocationNewOverlay.myLocation, 14.0, null)
-                }
+            locationLiveData.observeOnce(viewLifecycleOwner) {
+                controller.animateTo(GeoPoint(it), 14.0, null)
             }
 
+            val myLocationNewOverlay = MyLocationOverlay(this, gpsMyLocationProvider)
             val scaleBarOverlay = ScaleBarOverlay(this)
             scaleBarOverlay.setScaleBarOffset(10, 10)
 
