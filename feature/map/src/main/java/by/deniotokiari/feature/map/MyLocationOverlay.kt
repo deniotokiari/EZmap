@@ -5,7 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Point
 import android.location.Location
-import android.view.MotionEvent
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import org.osmdroid.api.IMapView
@@ -27,6 +26,7 @@ class MyLocationOverlay(
     private val iconCenterY: Float? by lazy { icon?.let { it.height / 2.0F - 0.5F } }
     private val geoPoint = GeoPoint(0.0, 0.0)
     private val drawPixel = Point()
+    private val snapPixel = Point()
     private val paint = Paint().apply { isFilterBitmap = true }
     private var location: Location? = null
 
@@ -39,8 +39,21 @@ class MyLocationOverlay(
     }
 
     override fun onSnapToItem(x: Int, y: Int, snapPoint: Point?, mapView: IMapView?): Boolean {
-        // TODO
-        return false
+        return location?.let {
+            this.mapView.projection.apply {
+                toPixels(geoPoint, this@MyLocationOverlay.snapPixel)
+            }
+
+            snapPoint?.apply {
+                this.x = this@MyLocationOverlay.snapPixel.x
+                this.y = this@MyLocationOverlay.snapPixel.y
+            }
+
+            val xDiff = x - this.snapPixel.x
+            val yDIff = y - this.snapPixel.y
+
+            return xDiff * xDiff + yDIff * yDIff < 64
+        } ?: false
     }
 
     override fun onResume() {
@@ -85,10 +98,5 @@ class MyLocationOverlay(
 
             c.restore()
         }
-    }
-
-    override fun onTouchEvent(event: MotionEvent?, mapView: MapView?): Boolean {
-        // TODO
-        return super.onTouchEvent(event, mapView)
     }
 }

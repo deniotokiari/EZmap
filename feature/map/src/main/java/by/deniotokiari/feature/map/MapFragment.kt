@@ -59,8 +59,10 @@ class MapFragment(
             }
 
             val myLocationNewOverlay = MyLocationOverlay(this, gpsMyLocationProvider)
-            val scaleBarOverlay = ScaleBarOverlay(this)
-            scaleBarOverlay.setScaleBarOffset(10, 10)
+            val scaleBarOverlay = ScaleBarOverlay(this).apply {
+                setScaleBarOffset(10, 10)
+                setEnableAdjustLength(true)
+            }
 
             overlays.add(scaleBarOverlay)
             overlays.add(myLocationNewOverlay)
