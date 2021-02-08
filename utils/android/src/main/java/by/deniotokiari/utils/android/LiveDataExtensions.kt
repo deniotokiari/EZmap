@@ -2,6 +2,7 @@ package by.deniotokiari.utils.android
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.Observer
 import by.deniotokiari.utils.kotlin.Consumable
 
@@ -20,4 +21,15 @@ fun <T> LiveData<T>.observeOnce(lifecycleOwner: LifecycleOwner, block: (T) -> Un
         }
     })
 
+}
+
+fun <T, A, B> merge(a: LiveData<A>, b: LiveData<B>, block: (A?, B?) -> T): LiveData<T> {
+    return MediatorLiveData<T>().apply {
+        addSource(a) {
+            value = block(it, b.value)
+        }
+        addSource(b) {
+            value = block(a.value, it)
+        }
+    }
 }
