@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.location.Location
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import by.deniotokiari.utils.android.get
@@ -22,20 +23,27 @@ class MapViewModel(
     val locationLiveData: LiveData<Location>
 ) : ViewModel() {
 
-    val zoomLevel: LiveData<Double> = MutableLiveData(preferences[KEY_ZOOM_LEVEL, DEFAULT_ZOOM_LEVEL])
-    val mapLocation: MutableLiveData<Location> = MutableLiveData<Location>().apply {
-        preferences[KEY_MAP_LOCATION, ""]
-            .takeIf { it.isNotEmpty() }
-            ?.split(" ")
-            ?.let {
-                Location("").apply {
-                    longitude = it[0].toDouble()
-                    latitude = it[1].toDouble()
-                }
+    val zoomLevel: LiveData<Double> = MediatorLiveData<Double>().apply {
+        value = preferences[KEY_ZOOM_LEVEL, DEFAULT_ZOOM_LEVEL]
+
+        addSource(locationLiveData) {
+            if (value == DEFAULT_ZOOM_LEVEL) {
+                value = FOCUSED_ZOOM_LEVEL
             }
-            ?.also {
+
+            removeSource(locationLiveData)
+        }
+    }
+    val mapLocation: LiveData<Location> = MediatorLiveData<Location>().apply {
+        preferences.location()?.let { value = it }
+
+        addSource(locationLiveData) {
+            if (value == null) {
                 value = it
             }
+
+            removeSource(locationLiveData)
+        }
     }
 
     private val _maxZoomLevel: MutableLiveData<Double> = MutableLiveData(MAX_ZOOM_LEVEL)
@@ -63,4 +71,16 @@ class MapViewModel(
     fun updateMapLocation(longitude: Double, latitude: Double) {
         preferences[KEY_MAP_LOCATION] = "$longitude $latitude"
     }
+}
+
+private fun SharedPreferences.location(): Location? {
+    return this[KEY_MAP_LOCATION, ""]
+        .takeIf { it.isNotEmpty() }
+        ?.split(" ")
+        ?.let {
+            Location("").apply {
+                longitude = it[0].toDouble()
+                latitude = it[1].toDouble()
+            }
+        }
 }

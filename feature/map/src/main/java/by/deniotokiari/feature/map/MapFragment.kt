@@ -5,7 +5,6 @@ import android.view.View
 import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
-import by.deniotokiari.utils.android.observeOnce
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -56,9 +55,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         viewModel.maxZoomLevel.observe(viewLifecycleOwner, binding.map::setMaxZoomLevel)
         viewModel.locationLiveData.observe(viewLifecycleOwner, gpsMyLocationProvider::onLocationChanged)
         viewModel.zoomLevel.observe(viewLifecycleOwner, binding.map.controller::setZoom)
-        viewModel.locationLiveData.observeOnce(viewLifecycleOwner) {
-            //binding.map.controller.animateTo(GeoPoint(it), 14.0, null)
-        }
         viewModel.mapLocation.observe(viewLifecycleOwner) {
             binding.map.controller.animateTo(GeoPoint(it))
         }
@@ -74,19 +70,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         super.onPause()
 
         binding.map.onPause()
+        viewModel.updateZoomLevel(binding.map.zoomLevelDouble)
+        viewModel.updateMapLocation(binding.map.mapCenter.longitude, binding.map.mapCenter.latitude)
     }
 
     override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
         super.onConfigurationChanged(newConfig)
 
         viewModel.updateMinZoomLevel()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-
-        viewModel.updateZoomLevel(binding.map.zoomLevelDouble)
-        viewModel.updateMapLocation(binding.map.mapCenter.longitude, binding.map.mapCenter.latitude)
     }
 
     private fun initToolTipsForMapControls() {
