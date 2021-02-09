@@ -19,7 +19,7 @@ class MapViewModel(
     val locationLiveData: LiveData<Location>
 ) : ViewModel() {
 
-    val zoomLevel: LiveData<Double> = MediatorLiveData<Double>().apply {
+    private val _zoomLevel = MediatorLiveData<Double>().apply {
         val defaultZoomLevel = resources.getDouble(R.string.map_default_zoom_level)
         val focusedZoomLevel = resources.getDouble(R.string.map_focused_zoom_level)
 
@@ -33,7 +33,10 @@ class MapViewModel(
             removeSource(locationLiveData)
         }
     }
-    val mapLocation: LiveData<Location> = MediatorLiveData<Location>().apply {
+    val zoomLevel: LiveData<Double> by this::_zoomLevel
+
+
+    private val _mapLocation = MediatorLiveData<Location>().apply {
         preferences.location()?.let { value = it }
 
         addSource(locationLiveData) {
@@ -44,6 +47,7 @@ class MapViewModel(
             removeSource(locationLiveData)
         }
     }
+    val mapLocation: LiveData<Location> by this::_mapLocation
 
     fun saveZoomLevel(zoomLevel: Double) {
         preferences[KEY_ZOOM_LEVEL] = zoomLevel
@@ -51,6 +55,18 @@ class MapViewModel(
 
     fun saveMapLocation(longitude: Double, latitude: Double) {
         preferences[KEY_MAP_LOCATION] = "$longitude $latitude"
+    }
+
+    fun moveToCurrentLocation() {
+        _mapLocation.value = locationLiveData.value
+    }
+
+    fun zoomIn() {
+        _zoomLevel.value = requireNotNull(_zoomLevel.value) + 1
+    }
+
+    fun zoomOut() {
+        _zoomLevel.value = requireNotNull(_zoomLevel.value) - 1
     }
 }
 

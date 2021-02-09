@@ -10,7 +10,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <Button
+        android:id="@+id/my_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_medium"
+        android:text="Me"
+        app:layout_constraintBottom_toTopOf="@id/map_controls"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/zoom_in"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_medium"
+        android:text="+"
+        app:layout_constraintBottom_toTopOf="@id/zoom_out"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <Button
+        android:id="@+id/zoom_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_medium"
+        android:text="-"
+        app:layout_constraintBottom_toTopOf="@id/map_controls"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/zoom_in" />
+
     <LinearLayout
+        android:id="@+id/map_controls"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorPrimaryWithAlpha"

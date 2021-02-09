@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.viewModelScope
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
 import by.deniotokiari.utils.android.getDouble
+import by.deniotokiari.utils.android.getStatusBarHeight
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -43,7 +46,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
             val myLocationNewOverlay = MyLocationOverlay(this, gpsMyLocationProvider)
             val scaleBarOverlay = ScaleBarOverlay(this).apply {
-                setScaleBarOffset(10, 10)
+                viewModel.viewModelScope.launch {
+                    setScaleBarOffset(10, requireActivity().window.decorView.getStatusBarHeight() + 10)
+                }
+
                 setEnableAdjustLength(true)
             }
 
@@ -52,11 +58,24 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }
 
         bindViewModel()
+
+        binding.myLocation.setOnClickListener {
+            viewModel.moveToCurrentLocation()
+        }
+
+        binding.zoomIn.setOnClickListener {
+            viewModel.zoomIn()
+        }
+        binding.zoomOut.setOnClickListener {
+            viewModel.zoomOut()
+        }
     }
 
     private fun bindViewModel() {
         viewModel.locationLiveData.observe(viewLifecycleOwner, gpsMyLocationProvider::onLocationChanged)
-        viewModel.zoomLevel.observe(viewLifecycleOwner, binding.map.controller::setZoom)
+        viewModel.zoomLevel.observe(viewLifecycleOwner) {
+            binding.map.controller.animateTo(binding.map.mapCenter, it, 300L)
+        }
         viewModel.mapLocation.observe(viewLifecycleOwner) {
             binding.map.controller.animateTo(GeoPoint(it))
         }
