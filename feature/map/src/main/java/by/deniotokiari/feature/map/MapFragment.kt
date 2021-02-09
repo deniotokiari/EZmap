@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
+import by.deniotokiari.utils.android.getDouble
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -34,6 +35,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             isHorizontalMapRepetitionEnabled = false
             isVerticalMapRepetitionEnabled = false
 
+            minZoomLevel = resources.getDouble(R.string.map_min_zoom_level)
+            maxZoomLevel = resources.getDouble(R.string.map_max_zoom_level)
+
             setScrollableAreaLimitLatitude(MapView.getTileSystem().maxLatitude, MapView.getTileSystem().minLatitude, 0)
             setScrollableAreaLimitLongitude(MapView.getTileSystem().minLongitude, MapView.getTileSystem().maxLongitude, 0)
 
@@ -51,8 +55,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     }
 
     private fun bindViewModel() {
-        viewModel.minZoomLevel.observe(viewLifecycleOwner, binding.map::setMinZoomLevel)
-        viewModel.maxZoomLevel.observe(viewLifecycleOwner, binding.map::setMaxZoomLevel)
         viewModel.locationLiveData.observe(viewLifecycleOwner, gpsMyLocationProvider::onLocationChanged)
         viewModel.zoomLevel.observe(viewLifecycleOwner, binding.map.controller::setZoom)
         viewModel.mapLocation.observe(viewLifecycleOwner) {
@@ -70,14 +72,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         super.onPause()
 
         binding.map.onPause()
-        viewModel.updateZoomLevel(binding.map.zoomLevelDouble)
-        viewModel.updateMapLocation(binding.map.mapCenter.longitude, binding.map.mapCenter.latitude)
-    }
-
-    override fun onConfigurationChanged(newConfig: android.content.res.Configuration) {
-        super.onConfigurationChanged(newConfig)
-
-        viewModel.updateMinZoomLevel()
+        viewModel.saveZoomLevel(binding.map.zoomLevelDouble)
+        viewModel.saveMapLocation(binding.map.mapCenter.longitude, binding.map.mapCenter.latitude)
     }
 
     private fun initToolTipsForMapControls() {

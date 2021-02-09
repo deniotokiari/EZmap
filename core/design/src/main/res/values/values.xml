@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="map_min_zoom_level">1.5220123826976608</string>
+    <string name="map_max_zoom_level">18.0</string>
+    <string name="map_default_zoom_level">3.0</string>
+    <string name="map_focused_zoom_level">14.0</string>
+</resources>
