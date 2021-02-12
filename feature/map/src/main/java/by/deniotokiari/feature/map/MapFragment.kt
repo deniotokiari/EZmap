@@ -74,10 +74,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private fun bindViewModel() {
         viewModel.locationLiveData.observe(viewLifecycleOwner, gpsMyLocationProvider::onLocationChanged)
         viewModel.zoomLevel.observe(viewLifecycleOwner) {
-            binding.map.controller.animateTo(binding.map.mapCenter, it, 300L)
+            binding.map.controller.zoomTo(it, 300L)
         }
         viewModel.mapLocation.observe(viewLifecycleOwner) {
-            binding.map.controller.animateTo(GeoPoint(it))
+            binding.map.controller.animateTo(GeoPoint(it), null, 300L)
         }
     }
 

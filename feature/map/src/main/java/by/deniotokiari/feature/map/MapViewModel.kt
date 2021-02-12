@@ -19,6 +19,9 @@ class MapViewModel(
     val locationLiveData: LiveData<Location>
 ) : ViewModel() {
 
+    private val maxZoomLevel: Double by lazy { resources.getDouble(R.string.map_max_zoom_level) }
+    private val minZoomLevel: Double by lazy { resources.getDouble(R.string.map_min_zoom_level) }
+
     private val _zoomLevel = MediatorLiveData<Double>().apply {
         val defaultZoomLevel = resources.getDouble(R.string.map_default_zoom_level)
         val focusedZoomLevel = resources.getDouble(R.string.map_focused_zoom_level)
@@ -62,11 +65,15 @@ class MapViewModel(
     }
 
     fun zoomIn() {
-        _zoomLevel.value = requireNotNull(_zoomLevel.value) + 1
+        _zoomLevel.value
+            ?.takeIf { it + 1 < maxZoomLevel }
+            ?.let { _zoomLevel.value = it + 1 }
     }
 
     fun zoomOut() {
-        _zoomLevel.value = requireNotNull(_zoomLevel.value) - 1
+        _zoomLevel.value
+            ?.takeIf { it - 1 > minZoomLevel }
+            ?.let { _zoomLevel.value = it - 1 }
     }
 }
 

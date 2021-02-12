@@ -31,7 +31,7 @@ class LocationLiveData(private val context: Context) : LiveData<Location>() {
     @SuppressLint("MissingPermission")
     private fun requestLastLocation() {
         locationProvider?.lastLocation?.addOnSuccessListener {
-            postValue(it)
+            it?.let(this::postValue)
         }
     }
 
