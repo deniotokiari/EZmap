@@ -10,12 +10,15 @@ import by.deniotokiari.utils.android.getDouble
 import by.deniotokiari.utils.android.getStatusBarHeight
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import org.osmdroid.config.Configuration
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.mapsforge.MapsForgeTileProvider
+import org.osmdroid.mapsforge.MapsForgeTileSource
+import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
+import org.osmdroid.tileprovider.util.StorageUtils
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.ScaleBarOverlay
+import java.io.File
 
 class MapFragment : Fragment(R.layout.fragment_map) {
 
@@ -29,8 +32,15 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         initToolTipsForMapControls()
 
         with(binding.map) {
-            Configuration.getInstance().userAgentValue = context.packageName
-            setTileSource(TileSourceFactory.MAPNIK)
+            MapsForgeTileSource.createInstance(requireActivity().application)
+            val fromFiles = MapsForgeTileSource.createFromFiles(findFiles())
+            val forge = MapsForgeTileProvider(SimpleRegisterReceiver(context), fromFiles, null)
+
+            tileProvider = forge
+
+            //Configuration.getInstance().userAgentValue = context.packageName
+            //setTileSource(TileSourceFactory.MAPNIK)
+
             zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
             setMultiTouchControls(true)
             isTilesScaledToDpi = true
@@ -97,5 +107,13 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private fun initToolTipsForMapControls() {
         with(binding) { arrayOf(search, directions, mapLayers, bookmarks, menu) }.forEach { TooltipCompat.setTooltipText(it, it.contentDescription) }
+    }
+
+    private fun findFiles(): Array<File> {
+        return StorageUtils
+            .getStorageList(requireContext())
+            .mapNotNull { File(it.path + File.separator).listFiles { file -> file.name.endsWith(".map") }?.toList() }
+            .flatten()
+            .toTypedArray()
     }
 }

@@ -21,6 +21,9 @@ object Dependencies {
         "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
     )
     const val location = "com.google.android.gms:play-services-location:${Versions.location}"
+    const val maps_forge_android = "org.mapsforge:mapsforge-map-android:${Versions.maps_forge}"
+    const val maps_forge_map = "org.mapsforge:mapsforge-map:${Versions.maps_forge}"
+    const val maps_forge_themes = "org.mapsforge:mapsforge-themes:${Versions.maps_forge}"
     const val material = "com.google.android.material:material:${Versions.material}"
     val navigation = arrayOf(
         "androidx.navigation:navigation-fragment-ktx:${Versions.navigation}",
@@ -28,6 +31,7 @@ object Dependencies {
     )
     const val navigation_safe_args = "androidx.navigation:navigation-safe-args-gradle-plugin:${Versions.navigation}"
     const val osmdroid = "org.osmdroid:osmdroid-android:${Versions.osmdroid}"
+    const val osmdroid_maps_forge = "org.osmdroid:osmdroid-mapsforge:${Versions.osmdroid}@aar"
 }
 
 object Plugins {

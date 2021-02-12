@@ -1,6 +1,5 @@
 package by.deniotokiari.feature.permissions
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -14,19 +13,14 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import by.deniotokiari.core.navigation.MainNavigation
 
-private val permissions = arrayOf(
-    Manifest.permission.ACCESS_COARSE_LOCATION,
-    Manifest.permission.ACCESS_FINE_LOCATION,
-    Manifest.permission.ACCESS_WIFI_STATE,
-    Manifest.permission.ACCESS_NETWORK_STATE,
-    Manifest.permission.INTERNET
-)
-
 class PermissionsHandlerFragment(
     private val mainNavigation: MainNavigation
 ) : Fragment(R.layout.fragment_permissions_handler) {
 
     private var activityResultLauncher: ActivityResultLauncher<Array<String>>? = null
+    private val permissions: Array<String> by lazy {
+        requireContext().packageManager.getPackageInfo(requireContext().packageName, PackageManager.GET_PERMISSIONS).requestedPermissions
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
