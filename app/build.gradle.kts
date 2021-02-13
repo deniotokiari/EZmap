@@ -21,6 +21,7 @@ dependencies {
     implementation(":core:design")
     implementation(":core:navigation")
     implementation(":core:strings")
+    implementation(":core:tiles-provider")
     implementation(":feature:map")
     implementation(":feature:permissions-handler")
     implementation(":utils:android")

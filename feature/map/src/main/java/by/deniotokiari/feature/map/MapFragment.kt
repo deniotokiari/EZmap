@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
+import by.deniotokiari.core.tiles.provider.TilesProvider
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
 import by.deniotokiari.utils.android.getDouble
 import by.deniotokiari.utils.android.getStatusBarHeight
@@ -13,14 +14,15 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.osmdroid.mapsforge.MapsForgeTileProvider
 import org.osmdroid.mapsforge.MapsForgeTileSource
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
-import org.osmdroid.tileprovider.util.StorageUtils
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.ScaleBarOverlay
 import java.io.File
 
-class MapFragment : Fragment(R.layout.fragment_map) {
+class MapFragment(
+    private val tilesProvider: TilesProvider<File>
+) : Fragment(R.layout.fragment_map) {
 
     private val binding: FragmentMapBinding by lazy { FragmentMapBinding.bind(requireView()) }
     private val viewModel: MapViewModel by viewModel()
@@ -33,13 +35,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
         with(binding.map) {
             MapsForgeTileSource.createInstance(requireActivity().application)
-            val fromFiles = MapsForgeTileSource.createFromFiles(findFiles())
+            val fromFiles = MapsForgeTileSource.createFromFiles(tilesProvider.findFiles())
             val forge = MapsForgeTileProvider(SimpleRegisterReceiver(context), fromFiles, null)
 
             tileProvider = forge
-
-            //Configuration.getInstance().userAgentValue = context.packageName
-            //setTileSource(TileSourceFactory.MAPNIK)
 
             zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
             setMultiTouchControls(true)
@@ -107,13 +106,5 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     private fun initToolTipsForMapControls() {
         with(binding) { arrayOf(search, directions, mapLayers, bookmarks, menu) }.forEach { TooltipCompat.setTooltipText(it, it.contentDescription) }
-    }
-
-    private fun findFiles(): Array<File> {
-        return StorageUtils
-            .getStorageList(requireContext())
-            .mapNotNull { File(it.path + File.separator).listFiles { file -> file.name.endsWith(".map") }?.toList() }
-            .flatten()
-            .toTypedArray()
     }
 }
