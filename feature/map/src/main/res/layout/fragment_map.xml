@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space_medium"
         android:text="Me"
-        app:layout_constraintBottom_toTopOf="@id/map_controls"
+        app:layout_constraintBottom_toTopOf="@id/app_controls"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
@@ -36,47 +36,16 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/space_medium"
         android:text="-"
-        app:layout_constraintBottom_toTopOf="@id/map_controls"
+        app:layout_constraintBottom_toTopOf="@id/app_controls"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/zoom_in" />
 
-    <LinearLayout
-        android:id="@+id/map_controls"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/app_controls"
+        android:name="by.deniotokiari.feature.app.controls.AppControlsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?colorPrimaryWithAlpha"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:background="?colorPrimary">
-
-        <ImageButton
-            android:id="@+id/search"
-            style="?mapControlsStyle"
-            android:contentDescription="@string/search"
-            android:src="@android:drawable/ic_menu_search" />
-
-        <ImageButton
-            android:id="@+id/directions"
-            style="?mapControlsStyle"
-            android:contentDescription="@string/directions"
-            android:src="@android:drawable/ic_menu_directions" />
-
-        <ImageButton
-            android:id="@+id/map_layers"
-            style="?mapControlsStyle"
-            android:contentDescription="@string/map_layers"
-            android:src="@android:drawable/ic_menu_mapmode" />
-
-        <ImageButton
-            android:id="@+id/bookmarks"
-            style="?mapControlsStyle"
-            android:contentDescription="@string/bookmarks"
-            android:src="@android:drawable/ic_menu_myplaces" />
-
-        <ImageButton
-            android:id="@+id/menu"
-            style="?mapControlsStyle"
-            android:contentDescription="@string/settings"
-            android:src="@android:drawable/ic_menu_preferences" />
-    </LinearLayout>
+        tools:background="?colorPrimary"
+        tools:layout_height="52dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

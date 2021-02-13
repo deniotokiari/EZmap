@@ -2,7 +2,6 @@ package by.deniotokiari.feature.map
 
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.widget.TooltipCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
 import by.deniotokiari.core.tiles.provider.TilesProvider
@@ -30,8 +29,6 @@ class MapFragment(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        initToolTipsForMapControls()
 
         with(binding.map) {
             MapsForgeTileSource.createInstance(requireActivity().application)
@@ -102,9 +99,5 @@ class MapFragment(
         binding.map.onPause()
         viewModel.saveZoomLevel(binding.map.zoomLevelDouble)
         viewModel.saveMapLocation(binding.map.mapCenter.longitude, binding.map.mapCenter.latitude)
-    }
-
-    private fun initToolTipsForMapControls() {
-        with(binding) { arrayOf(search, directions, mapLayers, bookmarks, menu) }.forEach { TooltipCompat.setTooltipText(it, it.contentDescription) }
     }
 }

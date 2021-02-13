@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorPrimaryWithAlpha"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:background="?colorPrimary">
+
+        <ImageButton
+            android:id="@+id/search"
+            style="?mapControlsStyle"
+            android:contentDescription="@string/search"
+            android:src="@android:drawable/ic_menu_search" />
+
+        <ImageButton
+            android:id="@+id/directions"
+            style="?mapControlsStyle"
+            android:contentDescription="@string/directions"
+            android:src="@android:drawable/ic_menu_directions" />
+
+        <ImageButton
+            android:id="@+id/map_layers"
+            style="?mapControlsStyle"
+            android:contentDescription="@string/map_layers"
+            android:src="@android:drawable/ic_menu_mapmode" />
+
+        <ImageButton
+            android:id="@+id/bookmarks"
+            style="?mapControlsStyle"
+            android:contentDescription="@string/bookmarks"
+            android:src="@android:drawable/ic_menu_myplaces" />
+
+        <ImageButton
+            android:id="@+id/menu"
+            style="?mapControlsStyle"
+            android:contentDescription="@string/settings"
+            android:src="@android:drawable/ic_menu_preferences" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

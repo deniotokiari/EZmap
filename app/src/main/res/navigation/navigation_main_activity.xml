@@ -21,5 +21,15 @@
         android:id="@+id/fragment_map"
         android:name="by.deniotokiari.feature.map.MapFragment"
         android:label="@null"
-        tools:layout="@layout/fragment_map" />
+        tools:layout="@layout/fragment_map">
+        <action
+            android:id="@+id/open_menu"
+            app:destination="@id/dialog_menu" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/dialog_menu"
+        android:name="by.deniotokiari.feature.app.controls.MenuBottomSheetFragment"
+        android:label="@null"
+        tools:layout="@layout/fragment_menu" />
 </navigation>

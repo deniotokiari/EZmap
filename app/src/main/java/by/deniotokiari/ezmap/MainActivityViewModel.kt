@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavDirections
 import by.deniotokiari.core.navigation.MainNavigation
+import by.deniotokiari.feature.map.MapFragmentDirections
 import by.deniotokiari.feature.permissions.PermissionsHandlerFragmentDirections
 import by.deniotokiari.utils.kotlin.Consumable
 
@@ -15,5 +16,9 @@ class MainActivityViewModel : ViewModel(), MainNavigation {
 
     override fun permissionsHandlerToMap() {
         _navigation.value = Consumable(PermissionsHandlerFragmentDirections.permissionsToMap())
+    }
+
+    override fun openMenu() {
+        _navigation.value = Consumable(MapFragmentDirections.openMenu())
     }
 }

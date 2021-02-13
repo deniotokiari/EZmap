@@ -21,6 +21,7 @@ dependencies {
     implementation(":core:design")
     implementation(":core:strings")
     implementation(":core:tiles-provider")
+    implementation(":feature:app-controls")
     implementation(":utils:android")
     implementation(":utils:kotlin")
 }

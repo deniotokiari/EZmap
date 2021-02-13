@@ -4,6 +4,7 @@ include(
     ":core:navigation",
     ":core:strings",
     ":core:tiles-provider",
+    ":feature:app-controls",
     ":feature:map",
     ":feature:permissions-handler",
     ":utils:android",
