@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.viewModelScope
-import by.deniotokiari.core.tiles.provider.TilesProvider
+import by.deniotokiari.core.tiles.provider.FilesViewModel
 import by.deniotokiari.feature.map.databinding.FragmentMapBinding
 import by.deniotokiari.utils.android.getDouble
 import by.deniotokiari.utils.android.getStatusBarHeight
@@ -17,10 +17,9 @@ import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.ScaleBarOverlay
-import java.io.File
 
 class MapFragment(
-    private val tilesProvider: TilesProvider<File>
+    private val filesViewModel: FilesViewModel
 ) : Fragment(R.layout.fragment_map) {
 
     private val binding: FragmentMapBinding by lazy { FragmentMapBinding.bind(requireView()) }
@@ -32,14 +31,15 @@ class MapFragment(
 
         with(binding.map) {
             MapsForgeTileSource.createInstance(requireActivity().application)
-            val fromFiles = MapsForgeTileSource.createFromFiles(tilesProvider.findFiles())
-            val forge = MapsForgeTileProvider(SimpleRegisterReceiver(context), fromFiles, null)
 
-            tileProvider = forge
+            filesViewModel.files.observe(viewLifecycleOwner) {
+                val fromFiles = MapsForgeTileSource.createFromFiles(it.toTypedArray())
+                val forge = MapsForgeTileProvider(SimpleRegisterReceiver(context), fromFiles, null)
+                tileProvider = forge
+            }
 
             zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
             setMultiTouchControls(true)
-            isTilesScaledToDpi = true
 
             isHorizontalMapRepetitionEnabled = false
             isVerticalMapRepetitionEnabled = false

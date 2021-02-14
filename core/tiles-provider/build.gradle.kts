@@ -9,6 +9,7 @@ dependencies {
     implementation(Dependencies.appcompat)
     implementation(Dependencies.constraintlayout)
     implementation(Dependencies.corektx)
+    implementation(*Dependencies.lifecycle)
     implementation(Dependencies.material)
     implementation(Dependencies.osmdroid)
 

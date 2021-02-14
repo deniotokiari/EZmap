@@ -18,7 +18,8 @@ object Dependencies {
     const val fragment = "androidx.fragment:fragment:${Versions.fragment}"
     val lifecycle = arrayOf(
         "androidx.lifecycle:lifecycle-viewmodel-ktx:${Versions.lifecycle}",
-        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}"
+        "androidx.lifecycle:lifecycle-livedata-ktx:${Versions.lifecycle}",
+        "androidx.lifecycle:lifecycle-common-java8:${Versions.lifecycle}"
     )
     const val location = "com.google.android.gms:play-services-location:${Versions.location}"
     const val maps_forge_android = "org.mapsforge:mapsforge-map-android:${Versions.maps_forge}"
