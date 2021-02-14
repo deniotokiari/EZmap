@@ -10,6 +10,7 @@ import by.deniotokiari.utils.android.getDouble
 import by.deniotokiari.utils.android.getStatusBarHeight
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.mapsforge.map.android.rendertheme.AssetsRenderTheme
 import org.osmdroid.mapsforge.MapsForgeTileProvider
 import org.osmdroid.mapsforge.MapsForgeTileSource
 import org.osmdroid.tileprovider.util.SimpleRegisterReceiver
@@ -33,7 +34,7 @@ class MapFragment(
             MapsForgeTileSource.createInstance(requireActivity().application)
 
             filesViewModel.files.observe(viewLifecycleOwner) {
-                val fromFiles = MapsForgeTileSource.createFromFiles(it.toTypedArray())
+                val fromFiles = MapsForgeTileSource.createFromFiles(it.toTypedArray(), AssetsRenderTheme(requireContext().assets, "renderthemes/", "rendertheme.xml"), "custom_theme")
                 val forge = MapsForgeTileProvider(SimpleRegisterReceiver(context), fromFiles, null)
                 tileProvider = forge
             }
@@ -70,20 +71,22 @@ class MapFragment(
         }
 
         binding.zoomIn.setOnClickListener {
-            viewModel.zoomIn()
+            binding.map.controller.zoomIn(300L)
+            //viewModel.zoomIn()
         }
         binding.zoomOut.setOnClickListener {
-            viewModel.zoomOut()
+            binding.map.controller.zoomOut(300L)
+            //viewModel.zoomOut()
         }
     }
 
     private fun bindViewModel() {
         viewModel.locationLiveData.observe(viewLifecycleOwner, gpsMyLocationProvider::onLocationChanged)
         viewModel.zoomLevel.observe(viewLifecycleOwner) {
-            binding.map.controller.zoomTo(it, 300L)
+            //binding.map.controller.zoomTo(it, 300L)
         }
         viewModel.mapLocation.observe(viewLifecycleOwner) {
-            binding.map.controller.animateTo(GeoPoint(it), null, 300L)
+            binding.map.controller.animateTo(GeoPoint(it), 14.0, 300L)
         }
     }
 

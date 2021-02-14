@@ -40,7 +40,7 @@ class MapViewModel(
 
 
     private val _mapLocation = MediatorLiveData<Location>().apply {
-        preferences.location()?.let { value = it }
+        //preferences.location()?.let { value = it }
 
         addSource(locationLiveData) {
             if (value == null) {
